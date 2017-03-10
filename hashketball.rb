@@ -289,44 +289,31 @@ end #end method
 def big_shoe_rebounds
 
   home_team_players = game_hash[:home][:players] #this home team players (and their data)
-  away_team_players = game_hash[:away][:players] #this away team players (and their data)
+  away_team_players = game_hash[:away][:players] #this away team players (and their data)  
 
-  #all_players = game_hash[:home][:away][:players] #all team players (and their data)
-  all_shoe_sizes = [] #empty hash, to hold all shoe sizes
+  all_players = home_team_players.merge(away_team_players) #merge hashes above into all_players
   
-  all_players = home_team_players.merge(away_team_players)
+  all_shoe_sizes = [] #empty hash, to hold all shoe sizes
 
   all_players.each do |key, value| #loop through all the players...
     #binding.pry
-    shoe_size = value.values[1]
+    shoe_size = value.values[1] #this variable holds the shoe size
     all_shoe_sizes << shoe_size #push all shoe_sizes to the all_shoe_sizes array
   end #end each loop
 
-  #First, find the player with the largest shoe size
+  #First, find the player with the largest shoe size:
   
   biggest_shoe = all_shoe_sizes.max
-  # puts biggest_shoe
-  # return biggest_shoe
 
-  #Then, return that player's number of rebounds
-
-  #Remember to think about return values here.
-  #Use binding.pry to drop into your method and understand
-  #what it is returning and why.
+  #Then, return that player's number of rebounds:
 
   all_players.each do |key, value| #loop through all the players...
     #binding.pry
-
     shoe_size = value.values[1]
-
-    if shoe_size == biggest_shoe
-      return value.values[3] #return that player's value.values[3], AKA rebounds
+    rebounds = value.values[3]
+    
+    if shoe_size == biggest_shoe #if the shoe fits...
+      return rebounds #return that player's rebounds
     end #end if statement
   end #end each loop
-
-  
-
-  
-
-  
 end #end method
