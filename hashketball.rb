@@ -165,27 +165,53 @@ puts home_team_name
 def num_points_scored(player)
 
   home_team_players = game_hash[:home][:players] #this home team players (and their data)
-  away_team_players = game_hash[:away][:players] #this home team players (and their data)
+  away_team_players = game_hash[:away][:players] #this away team players (and their data)
 
-  home_team_player_points_array = [] #empty array
-  away_team_player_points_array = [] #empty array
+  # home_team_player_points_array = [] #empty array
+  # away_team_player_points_array = [] #empty array
 
-  if away_team_players.include?(player) #if player is on the away team...
+  if home_team_players.include?(player) #if player is on the away team...
+    home_team_players.each do |key, value| #key is player name, value is player_data
+      #binding.pry
+      #value.include?(:points)
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value.values[2] #return that player's points, AKA value.values[2]
+      end #end if statement
+    end #end away_team_players.each loop
+
+  elsif away_team_players.include?(player) #if player is on the away team...
     away_team_players.each do |key, value| #key is player name, value is player_data
       #binding.pry
-      value.each do |key, value| #key is player, value is nested player_data
-        #binding.pry
-        value.each do |key, value|
-          #binding.pry
-          if key == :points #if the key is the player's points...
-            away_team_player_points_array << value #push the player's points (the value of :points) into our array
-          end #end if statement
-        end #end value.each loop
-      end #end value.each loop
+      #value.include?(:points)
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value.values[2] #return that player's points, AKA value.values[2]
+      end #end if statement
     end #end away_team_players.each loop
-    return away_team_player_points_array
-  end #end if statement
+  end #end if..elsif statement
 end #end method
+
+
+def shoe_size(player)
+
+  home_team_players = game_hash[:home][:players] #this home team players (and their data)
+  away_team_players = game_hash[:away][:players] #this away team players (and their data)
+
+  if home_team_players.include?(player) #if player is on the away team...
+    home_team_players.each do |key, value| #key is player name, value is player_data
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value.values[1] #return that player's shoe size, AKA value.values[1]
+      end #end if statement
+    end #end away_team_players.each loop
+
+  elsif away_team_players.include?(player) #if player is on the away team...
+    away_team_players.each do |key, value| #key is player name, value is player_data
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value.values[1] #return that player's shoe size, AKA value.values[1]
+      end #end if statement
+    end #end away_team_players.each loop
+  end #end if..elsif statement
+end #end method
+
 
 
 
@@ -199,6 +225,7 @@ def team_colors(team_name)
   end #end if statement
 end #end method
 
+
 def team_names
   new_array = [] #array to hold team names
   new_array << game_hash[:home][:team_name]
@@ -207,9 +234,12 @@ def team_names
   return new_array
 end
 
+
 def player_numbers(team_name)
+  home_team_player_numbers_array = [] #new array
+  away_team_player_numbers_array = [] #new array
+
   if team_name == game_hash[:home][:team_name] ## if team name is home team, AKA "Brooklyn Nets"
-    home_team_player_numbers_array = [] #new array
     home_team_player_numbers = game_hash[:home][:players]
     home_team_player_numbers.each do |key, value| #key is player name
       value.each do |key, value| #key is player_data
@@ -221,7 +251,6 @@ def player_numbers(team_name)
     end #end loop
     return home_team_player_numbers_array
   elsif team_name == game_hash[:away][:team_name] ## else if team name is away team, AKA "Charlotte Hornets"
-    away_team_player_numbers_array = [] #new array
     away_team_player_numbers = game_hash[:away][:players]
     away_team_player_numbers.each do |key, value| #key is player name
       value.each do |key, value| #key is number
@@ -235,8 +264,69 @@ def player_numbers(team_name)
   end #end if statement
 end #end method
 
+
 def player_stats(player)
+  home_team_players = game_hash[:home][:players] #this home team players (and their data)
+  away_team_players = game_hash[:away][:players] #this away team players (and their data)
+
+  if home_team_players.include?(player) #if player is on the away team...
+    home_team_players.each do |key, value| #key is player name, value is player_data
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value #return that player's stats, AKA value / player_data
+      end #end if statement
+    end #end away_team_players.each loop
+
+  elsif away_team_players.include?(player) #if player is on the away team...
+    away_team_players.each do |key, value| #key is player name, value is player_data
+      if key == player #if the player passed into the method equals the key in this loop...
+        return value #return that player's stats, AKA value / player_data
+      end #end if statement
+    end #end away_team_players.each loop
+  end #end if..elsif statement
 end #end method
 
-def big_shoe_rebounds(player)
+
+def big_shoe_rebounds
+
+  home_team_players = game_hash[:home][:players] #this home team players (and their data)
+  away_team_players = game_hash[:away][:players] #this away team players (and their data)
+
+  #all_players = game_hash[:home][:away][:players] #all team players (and their data)
+  all_shoe_sizes = [] #empty hash, to hold all shoe sizes
+  
+  all_players = home_team_players.merge(away_team_players)
+
+  all_players.each do |key, value| #loop through all the players...
+    #binding.pry
+    shoe_size = value.values[1]
+    all_shoe_sizes << shoe_size #push all shoe_sizes to the all_shoe_sizes array
+  end #end each loop
+
+  #First, find the player with the largest shoe size
+  
+  biggest_shoe = all_shoe_sizes.max
+  # puts biggest_shoe
+  # return biggest_shoe
+
+  #Then, return that player's number of rebounds
+
+  #Remember to think about return values here.
+  #Use binding.pry to drop into your method and understand
+  #what it is returning and why.
+
+  all_players.each do |key, value| #loop through all the players...
+    #binding.pry
+
+    shoe_size = value.values[1]
+
+    if shoe_size == biggest_shoe
+      return value.values[3] #return that player's value.values[3], AKA rebounds
+    end #end if statement
+  end #end each loop
+
+  
+
+  
+
+  
 end #end method
